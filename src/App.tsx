@@ -13,10 +13,15 @@ import { EthHashInfo } from '@safe-global/safe-react-components'
 import Modal from './common/Modal';
 
 import AppBar from './AppBar'
+import './App.css'
+import './../src/pages/Crypto.css'
+
 
 import { AuthKitSignInData, Web3AuthModalPack, Web3AuthEventListener } from '@safe-global/auth-kit'
 import KYC from './pages/KYC'
 import Crypto from './pages/Crypto'
+import Card from './common/Card'
+import UserProfile from './common/UserProfile'
 
 const connectedHandler: Web3AuthEventListener = (data) => console.log('CONNECTED', data)
 const disconnectedHandler: Web3AuthEventListener = (data) => console.log('DISCONNECTED', data)
@@ -30,7 +35,7 @@ function App() {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const options: Web3AuthOptions = {
         clientId: import.meta.env.VITE_WEB3AUTH_CLIENT_ID || 'BNN52xrxOoUaGWybaXy9BA_CvyqMd2Q4nIF_xmMIxPQhVJySXrCGDYTzK6uhshA7yfjjJORpnYf_3t4NZv74VAo',
         web3AuthNetwork: 'testnet',
@@ -90,7 +95,7 @@ function App() {
 
   useEffect(() => {
     if (web3AuthModalPack && web3AuthModalPack.getProvider()) {
-      ;(async () => {
+      ; (async () => {
         await login()
       })()
     }
@@ -120,13 +125,12 @@ function App() {
   }
 
   const updatedAvailableStatus = localStorage.getItem("anonAadhaar");
-  useEffect(()=>{
+  useEffect(() => {
     if (updatedAvailableStatus) {
       const parsedValue = JSON.parse(updatedAvailableStatus);
-      console.log("--parsedValue---",parsedValue.status)
+      console.log("--parsedValue---", parsedValue.status)
     }
-  },[updatedAvailableStatus])
-    
+  }, [updatedAvailableStatus])
   const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -136,39 +140,75 @@ function App() {
   const closeModal = () => {
     setModalOpen(false);
   };
-   
+
+  const plans = [
+    { id: 1, name: 'Safe', imgSrc: 'images/safe.png' },
+    { id: 2, name: 'UPI', imgSrc: 'images/upi.png' },
+    { id: 3, name: 'Light House', imgSrc: 'images/lighthouse.png' },
+    { id: 4, name: 'API Setu', imgSrc: 'images/api-setu.png' },
+    { id: 5, name: 'Adhar Annon', imgSrc: 'images/adhar.png' },
+    { id: 6, name: 'Polygon', imgSrc: 'images/polygon.png' },
+  ];
+
+  const planElements = plans.map((plan) => (
+    <div key={plan.id}>
+      <Card title={plan.name} imgSrc={plan.imgSrc}/>
+    </div>
+  ));
 
   return (
     <>
       <AppBar onLogin={login} onLogout={logout} userInfo={userInfo} isLoggedIn={!!provider} />
-      <KYC/>
-      <div>
-      <button onClick={openModal}>Open Modal</button>
+      {safeAuthSignInResponse?.eoa ? (
+        <Grid container style={{ backgroundColor: '#ffe7b9', height: '100vh' }}>
+          <div style={{ display: 'flex', width: '100%', marginTop: '20px', height: '80vh' }}>
+            <div style={{
+              flex: '1',
+              padding: '20px',
+              margin: '10px',
+              boxSizing: 'border-box'
+            }}>
+             
+              {/* <KYC /><br/>
+              <div>
+            <div className="">
+              <p className="">UPI Transaction
+              </p>
+              <button className='upi-btn' onClick={openModal}>
+                <span> Transaction
+                </span>
+              </button>
 
-{/* Integration of Modal */}
-<Modal isOpen={isModalOpen} onClose={closeModal}>
-  {/* Your modal content goes here */}
-  <Crypto/>
-</Modal>
-      </div>
-
-      {safeAuthSignInResponse?.eoa && (
-        <Grid container>
+              <Modal isOpen={isModalOpen} onClose={closeModal}>
+                <Crypto />
+              </Modal>
+            </div>
+          </div> */}
+            </div>
+            <div style={{
+              flex: '1',
+              padding: '20px',
+              margin: '10px',
+              boxSizing: 'border-box',
+              justifyContent: 'center',
+              alignContent: 'center',
+              display: 'flex',
+              marginTop: '5%'
+            }}>
+              {/* Content for the second column */}
+              <span><UserProfile title='test' address={safeAuthSignInResponse.eoa} prefix={getPrefix('0x5')} /></span>
+            </div>
+          </div>
+         
           <Grid item md={4} p={4}>
-            <Typography variant="h3" color="secondary" fontWeight={700}>
+            {/* <Typography variant="h3" color="secondary" fontWeight={700}>
               Owner account
             </Typography>
-            <Divider sx={{ my: 3 }} />
-            <EthHashInfo
-              address={safeAuthSignInResponse.eoa}
-              showCopyButton
-              showPrefix
-              prefix={getPrefix('0x5')}
-            />
+            <Divider sx={{ my: 3 }} /> */}
           </Grid>
           <Grid item md={8} p={4}>
             <>
-              <Typography variant="h3" color="secondary" fontWeight={700}>
+              {/* <Typography variant="h3" color="secondary" fontWeight={700}>
                 Available Safes
               </Typography>
               <Divider sx={{ my: 3 }} />
@@ -182,11 +222,35 @@ function App() {
                 <Typography variant="body1" color="secondary" fontWeight={700}>
                   No Available Safes
                 </Typography>
-              )}
+              )} */}
             </>
           </Grid>
         </Grid>
-      )}
+      ) : <>
+        <div className='landing-session'>
+          <div className="container">
+            <div className="row">
+              <div className="box">
+                <div className="column" >
+
+                  <span style={{ fontFamily: 'Rye, sans-serif', fontSize: '60px', padding: '20px' }}>Land Concealment</span><br />
+                  <span style={{ fontFamily: 'Cabin Sketch, Monoton, Rye, Yatra One, Young Serif, sans-serif', fontSize: '25px' }}>Blockchain's account abstraction enhances security, privacy, and user experience by allowing interactions without revealing sensitive details.</span>
+                </div>
+                <div className="column">
+                  <img src='images/landing-1.png' style={{ height: '80%' }} />
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="box landing-logo-session">
+                {planElements}
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </>}
     </>
   )
 }
@@ -207,3 +271,4 @@ const getPrefix = (chainId: string) => {
 }
 
 export default App
+

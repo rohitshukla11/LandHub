@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Modal from './../common/Modal';
 import './Crypto.css'
 
-const Crypto: React.FC = () => {
+const Crypto: React.FC = () => {            
     const [formData, setFormData] = useState({
         to: 'onmodal@kotapay',
         upiUserInput: ''
@@ -11,9 +11,9 @@ const Crypto: React.FC = () => {
 
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const getExampleXml = () => `
-    <upi:ReqChkTxn xmlns:upi="http://npci.org/upi/schema/">
+    <upi:ReqChkTxn xmlns:upi=http://npci.org/upi/schema/>
         <Head ver="2.0" ts="2018-09-15T20:19:41.038+05:30" orgId="112233" msgId="NPC000015d08de6764b7485f98cb0cf88c5"/>
-        <Txn id="NPC07e28b41311d414294715635aa07cc61" note="ReqChkTxn" refId="NPC000015d08de6764b7485f98cb0cf88c5" refUrl="http://www.icicibank.com" refCategory="00" ts="2018-09-15T20:19:41.038+05:30" type="ChkTxn" umn="1" orgMsgId="NPC000015d08de6764b7485f98cb0cf88c5" orgRrn="123456789012" orgTxnId="NPC000015d08de6764b7485f98cb0cf88c6" subType="DEBIT" orgTxnDate="2018-09-15T20:19:41.038+05:30" initiationMode="00" purpose="00" />
+        <Txn id="NPC07e28b41311d414294715635aa07cc61" note="ReqChkTxn" refId="NPC000015d08de6764b7485f98cb0cf88c5" refUrl=http://www.icicibank.com refCategory="00" ts="2018-09-15T20:19:41.038+05:30" type="ChkTxn" umn="1" orgMsgId="NPC000015d08de6764b7485f98cb0cf88c5" orgRrn="123456789012" orgTxnId="NPC000015d08de6764b7485f98cb0cf88c6" subType="DEBIT" orgTxnDate="2018-09-15T20:19:41.038+05:30" initiationMode="00" purpose="00" />
     </upi:ReqChkTxn>
 `;
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +31,7 @@ const Crypto: React.FC = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch("https://apisetu.gov.in/api/upi-npci/ReqChkTxn/2.0/urn:txnid:123", {
+            const response = await fetch('https://apisetu.gov.in/api/upi-npci/ReqChkTxn/2.0/urn:txnid:123', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,13 +73,13 @@ const Crypto: React.FC = () => {
             }
         } catch (error) {
             // Assign example XML to response in case of an exception
-            const errorResponse = getExampleXml();
-
-            console.error('Caught an exception during API call:', error);
-            console.log('Example XML in case of error:', errorResponse);
-
-            // Check the purpose value in the example XML
-            const purposeRegex = /<purpose>(\d+)<\/purpose>/;
+            const errorResponse = `
+            <upi:ReqChkTxn xmlns:upi=http://npci.org/upi/schema/>
+                <Head ver="2.0" ts="2018-09-15T20:19:41.038+05:30" orgId="112233" msgId="NPC000015d08de6764b7485f98cb0cf88c5"/>
+                <Txn id="NPC07e28b41311d414294715635aa07cc61" note="ReqChkTxn" refId="NPC000015d08de6764b7485f98cb0cf88c5" refUrl=http://www.icicibank.com refCategory="00" ts="2018-09-15T20:19:41.038+05:30" type="ChkTxn" umn="1" orgMsgId="NPC000015d08de6764b7485f98cb0cf88c5" orgRrn="123456789012" orgTxnId="NPC000015d08de6764b7485f98cb0cf88c6" subType="DEBIT" orgTxnDate="2018-09-15T20:19:41.038+05:30" initiationMode="00" purpose="00" />
+            </upi:ReqChkTxn>
+        `
+            const purposeRegex = / purpose="([^"]+)"/;
             const match = errorResponse.match(purposeRegex);
 
             if (match && match[1] === '00') {
@@ -133,6 +133,7 @@ const Crypto: React.FC = () => {
                         </div>
                     </div>
                     <button className="purchase--btn" type="submit">Checkout</button>
+                    {successMessage}
                 </form>
             </div>
         </>
