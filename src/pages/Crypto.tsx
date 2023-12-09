@@ -2,12 +2,16 @@
 import React, { useState } from "react";
 import Modal from "./../common/Modal";
 import "./Crypto.css";
+import { JsonRpcProvider, Wallet, ethers } from 'ethers';
+
 
 const Crypto: React.FC = () => {
   const [formData, setFormData] = useState({
     to: "onmodal@kotapay",
     upiUserInput: "",
   });
+
+  const [accountBalance, setAccountBalance] = useState<string>();
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const getExampleXml = () => `
@@ -16,10 +20,12 @@ const Crypto: React.FC = () => {
         <Txn id="NPC07e28b41311d414294715635aa07cc61" note="ReqChkTxn" refId="NPC000015d08de6764b7485f98cb0cf88c5" refUrl=http://www.icicibank.com refCategory="00" ts="2018-09-15T20:19:41.038+05:30" type="ChkTxn" umn="1" orgMsgId="NPC000015d08de6764b7485f98cb0cf88c5" orgRrn="123456789012" orgTxnId="NPC000015d08de6764b7485f98cb0cf88c6" subType="DEBIT" orgTxnDate="2018-09-15T20:19:41.038+05:30" initiationMode="00" purpose="00" />
     </upi:ReqChkTxn>
 `;
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async(e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
+    
   };
+
 
   // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   //     e.preventDefault();
@@ -94,6 +100,40 @@ const Crypto: React.FC = () => {
       // Add your error handling logic
     }
   };
+  const submitTxn = async()=>{
+    console.log("In submit txn");
+    await transferMoney("0x74d5F05E2E62BbA8aCc37cdCA8395776d866079c")
+  };
+  const transferMoney = async (destinationAddress: string): Promise<void> => {
+    console.log("transfder money is called");
+    // provider will be our connection to the Tenderly Web3 Gateway. We pull the URL from the .env file we created earlier.
+    const provider = new JsonRpcProvider("https://eth-goerli.public.blastapi.io" as string);
+  
+    // Prepare the sender - this will be based on the private key we set up in the .env file.
+    const sender = new Wallet("3e632865f01c6e056af0aa6139e61b4f98a44c02107cb4bb3e478ce455bd8445" as string, provider);
+  
+    // The balanceBefore variable will hold the balance of the destination address before we send any SEP.
+    const balanceBefore = await provider.getBalance(destinationAddress);
+    console.log(`Destination balance before sending: ${ethers.formatEther(balanceBefore)} ETH`);
+    console.log("Sending...\n");
+  
+    // Here you can change how much SEP we are sending.
+    const tx = await sender.sendTransaction({ to: destinationAddress, value: ethers.parseEther("0.001") });
+    console.log("Sent! 🎉");
+    console.log(`TX hash: ${tx.hash}`);
+    console.log("Waiting for receipt...");
+  
+    // This line will block the script until 1 block is mined or 150s pass. That way we can be sure the transaction is complete.
+    await provider.waitForTransaction(tx.hash, 1, 150000).then(() => {});
+  
+    // Print out the link to the transaction overview page on the Tenderly Dashboard.
+    console.log(`TX details: https://dashboard.tenderly.co/tx/sepolia/${tx.hash}\n`);
+  
+    // The balanceAfter variable is retrieved the same as earlier - it will contain the new balance of the destination address.
+    const balanceAfter = await provider.getBalance(destinationAddress);
+    setAccountBalance(balanceAfter.toString());
+    console.log(`Destination balance after sending: ${ethers.formatEther(balanceAfter)} ETH`);
+  };
 
   return (
     <>
@@ -125,19 +165,19 @@ const Crypto: React.FC = () => {
                 type="number"
                 name="upiUserInput"
                 title="Input title"
-                placeholder="Enter UPI user input"
+                placeholder="Enter UPI transaction id."
                 value={formData.upiUserInput}
                 onChange={handleChange}
               />
             </div>
 
             <div className="note">note to read</div>
-            <div>You will get 20 Eth....</div>
+            <div></div>
           </div>
-          <button className="purchase--btn" type="submit">
+          <button className="purchase--btn" type="submit" onClick={ submitTxn }>
             Checkout
           </button>
-          {successMessage}---
+          {successMessage}---{accountBalance?.toString()}
         </form>
       </div>
     </>
