@@ -97,7 +97,7 @@ const Crypto: React.FC = () => {
 
   return (
     <>
-      <div className="modal w-full">
+      <div className="modal">
         <form className="form" onSubmit={handleSubmit}>
           <div className="credit-card-info--form">
             <div className="input_container">

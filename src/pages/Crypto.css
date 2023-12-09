@@ -151,7 +151,7 @@
 /* kyc */
 .kyc_card {
   position: relative;
-  width: 250px;
+  width: 350px;
   height: 250px;
   background-image: linear-gradient(-45deg, #f89b29 0%, #ff0f7b 100%);
   border-radius: 10px;

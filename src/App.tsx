@@ -156,6 +156,10 @@ function App() {
   }, [updatedAvailableStatus]);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const [user, setShowUser] = useState(true);
+  const [kyc, setKYC] = useState(false);
+  const [upi, setUPI] = useState(false);
+
   const openModal = () => {
     setModalOpen(true);
   };
@@ -170,7 +174,7 @@ function App() {
     { id: 3, name: "Light House", imgSrc: "images/lighthouse.png" },
     { id: 4, name: "API Setu", imgSrc: "images/api-setu.png" },
     { id: 5, name: "Adhar Annon", imgSrc: "images/adhar.png" },
-    { id: 6, name: "Polygon", imgSrc: "images/polygon.png" },
+    // { id: 6, name: "Polygon", imgSrc: "images/polygon.png" },
   ];
 
   const planElements = plans.map((plan) => (
@@ -189,59 +193,57 @@ function App() {
       />
       {safeAuthSignInResponse?.eoa ? (
         <Grid container style={{ backgroundColor: "#ffe7b9", height: "100vh" }}>
-          <div
-            style={{
-              display: "flex",
-              width: "100%",
-              marginTop: "20px",
-              height: "80vh",
-            }}
-          >
-            <div
-              style={{
-                flex: "1",
-                padding: "20px",
-                margin: "10px",
-                boxSizing: "border-box",
-              }}
-            >
-              {/* <KYC /><br/>
+          <div className="container">
+            <div className="main-card">
               <div>
-            <div className="">
-              <p className="">UPI Transaction
-              </p>
-              <button className='upi-btn' onClick={openModal}>
-                <span> Transaction
-                </span>
-              </button>
+                {user &&
 
-              <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <Crypto />
-              </Modal>
+                  <div
+                    style={{
+                      flex: "1",
+                      margin: "10px",
+                      boxSizing: "border-box",
+                      justifyContent: "center",
+                      alignContent: "center",
+                      display: "flex",
+                      marginTop: "5%",
+                    }}
+                  >
+                    <span>
+                      <UserProfile
+                        title="test"
+                        address={safeAuthSignInResponse.eoa}
+                        prefix={getPrefix("0x5")}
+                      />
+                    </span>
+                  </div>
+
+                }
+
+                {upi &&
+                  <div>
+                    <Modal isOpen={isModalOpen} onClose={closeModal}>
+                      <Crypto />
+                    </Modal>
+                  </div>
+
+                }
+
+                {kyc && <KYC />}
+              </div>
             </div>
-          </div> */}
+          </div>
+
+          <div>
+            <div>
+              <div className="sidenav">
+                <button onClick={() => { setShowUser(true); setKYC(false); setUPI(false) }}>1. Profile</button>
+                <button onClick={() => { setKYC(true); setShowUser(false); setUPI(false) }}>2. KYC</button>
+                <button onClick={() => { setUPI(true); setShowUser(false); setKYC(false) }}>3. Load Crypto via UPI</button>
+                <button>4. Land NFT</button>
+              </div>
             </div>
-            <div
-              style={{
-                flex: "1",
-                padding: "20px",
-                margin: "10px",
-                boxSizing: "border-box",
-                justifyContent: "center",
-                alignContent: "center",
-                display: "flex",
-                marginTop: "5%",
-              }}
-            >
-              {/* Content for the second column */}
-              <span>
-                <UserProfile
-                  title="test"
-                  address={safeAuthSignInResponse.eoa}
-                  prefix={getPrefix("0x5")}
-                />
-              </span>
-            </div>
+
           </div>
 
           <Grid item md={4} p={4}>

@@ -9,7 +9,7 @@ interface ModalProps {
 const Card: React.FC<ModalProps> = ({ title,imgSrc }) => {
     return (
         <>
-            <div className="card">
+            <div className="inner-card">
                 <div className="header">
                     <div className="img-box">
                     <img src={imgSrc} style={{ height: '100%',width:'100%' }} />

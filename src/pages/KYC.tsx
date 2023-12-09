@@ -40,7 +40,7 @@ export default function KYC() {
                         <LogInWithAnonAadhaar />
                     </div><div>
                         {status === "logged-in" && (<>
-                            <p style={{marginLeft: -'50px',color:'white'}}>✅ Congratulations Proof is validated successfully...!</p>
+                            <p style={{marginLeft: -'50px',color:'white'}}>✅ Congratulations Proof is validated successfully</p>
                         </>)}
                         {anonAadhaar?.status === "logged-in" && (
                             <>

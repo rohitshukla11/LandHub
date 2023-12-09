@@ -9,7 +9,7 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
-    <>
+    <div >
       {isOpen && (
         <Fragment>
           <div className="fixed inset-0 bg-black opacity-50"></div>
@@ -26,7 +26,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
           </div>
         </Fragment>
       )}
-    </>
+    </div>
   );
 };
 
