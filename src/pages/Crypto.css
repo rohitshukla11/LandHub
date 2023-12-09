@@ -48,7 +48,7 @@
   margin: 0 10px;
 }
 
-.separator > p {
+.separator>p {
   word-break: keep-all;
   display: block;
   text-align: center;
@@ -142,19 +142,18 @@
   -moz-appearance: textfield;
 }
 
-.note{
+.note {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
   padding: 20px;
 }
-
 
 /* kyc */
 .kyc_card {
   position: relative;
   width: 250px;
   height: 250px;
-  background-image: linear-gradient(-45deg, #f89b29 0%, #ff0f7b 100% );
+  background-image: linear-gradient(-45deg, #f89b29 0%, #ff0f7b 100%);
   border-radius: 10px;
   display: flex;
   padding: 10px 30px;
@@ -175,7 +174,7 @@
 .para {
   text-align: center;
   color: #ffffff;
- font-size: 20px;
+  font-size: 20px;
 }
 
 .overlay {
@@ -225,7 +224,7 @@
   transform: translate(-50%, -50%) scale(0);
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(-45deg, #f89b2980 0%, #ff0f7b80 100% );
+  background-image: linear-gradient(-45deg, #f89b2980 0%, #ff0f7b80 100%);
   transition: transform 0.5s ease;
 }
 
@@ -233,7 +232,7 @@
   transform: translate(-50%, -50%) scale(2);
 }
 
- .upi-btn {
+.upi-btn {
   display: inline-block;
   width: 150px;
   height: 50px;
@@ -243,10 +242,10 @@
   overflow: hidden;
   transition: all 0.5s ease-in;
   z-index: 1;
- }
- 
- .upi-btn::before,
- .upi-btn::after {
+}
+
+.upi-btn::before,
+.upi-btn::after {
   content: '';
   position: absolute;
   top: 0;
@@ -256,30 +255,30 @@
   transition: all 0.5s;
   overflow: hidden;
   z-index: -1;
- }
- 
- .upi-btn::before {
+}
+
+.upi-btn::before {
   left: -10px;
   background: #240046;
- }
- 
- .upi-btn::after {
+}
+
+.upi-btn::after {
   right: -10px;
   background: #5a189a;
- }
- 
- .upi-btn:hover::before,
- .upi-btn:hover::after {
+}
+
+.upi-btn:hover::before,
+.upi-btn:hover::after {
   width: 58%;
- }
- 
- .upi-btn:hover span {
+}
+
+.upi-btn:hover span {
   color: #e0aaff;
   transition: 0.3s;
- }
- 
- .upi-btn span {
+}
+
+.upi-btn span {
   color: #03045e;
   font-size: 18px;
   transition: all 0.3s ease-in;
- }
+}
