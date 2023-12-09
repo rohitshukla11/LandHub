@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": ["dom", "dom.iterable", "es6","esnext.bigint"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": false,
@@ -16,6 +16,10 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "paths": {
+    "crypto": [
+      "node_modules/crypto-js"
+    ]},
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

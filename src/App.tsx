@@ -14,6 +14,7 @@ import { EthHashInfo } from '@safe-global/safe-react-components'
 import AppBar from './AppBar'
 
 import { AuthKitSignInData, Web3AuthModalPack, Web3AuthEventListener } from '@safe-global/auth-kit'
+import Home from './pages/KYC'
 
 const connectedHandler: Web3AuthEventListener = (data) => console.log('CONNECTED', data)
 const disconnectedHandler: Web3AuthEventListener = (data) => console.log('DISCONNECTED', data)
@@ -119,6 +120,7 @@ function App() {
   return (
     <>
       <AppBar onLogin={login} onLogout={logout} userInfo={userInfo} isLoggedIn={!!provider} />
+      <Home/>
       {safeAuthSignInResponse?.eoa && (
         <Grid container>
           <Grid item md={4} p={4}>
