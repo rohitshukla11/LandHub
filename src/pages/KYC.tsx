@@ -6,21 +6,30 @@ import {
 import { useEffect, useState } from "react";
 import { AnonAadhaarProvider } from "anon-aadhaar-react";
 
-export default function Home() {
+export default function KYC() {
     const [anonAadhaar] = useAnonAadhaar();
     const [status, setStatus] = useState<null>(null)
-
+   
     useEffect(() => {
-        const availableStatus = localStorage.getItem("anonAadhaar")
-        if (availableStatus) {
-            const parsedValue = JSON.parse(availableStatus)
-            setStatus(parsedValue.status)
-        }
-    }, []);
+        const handleStorageChange = () => {
+          const updatedAvailableStatus = localStorage.getItem("anonAadhaar");
+    
+          if (updatedAvailableStatus) {
+            const parsedValue = JSON.parse(updatedAvailableStatus);
+            setStatus(parsedValue.status);
+          }
+        };
+        handleStorageChange();
+
+        const intervalId = setInterval(() => {
+          handleStorageChange();
+        }, 1000);
+        return () => {
+          clearInterval(intervalId);
+        };
+      }, []); 
 
     const app_id = BigInt("123").toString()
-
-    console.log("------====--", status)
 
     return (
         <>
@@ -32,6 +41,7 @@ export default function Home() {
                     {/* Render the proof if generated and valid */}
                     {status === "logged-in" ? (<>
                         <p>✅ Proof is valid</p>
+                        {/* <AnonAadhaarProof code={JSON.stringify(anonAadhaar.pcd, null, 2)} /> */}
                     </>) : <>try</>}
                     {anonAadhaar?.status === "logged-in" && (
                         <>

@@ -10,11 +10,13 @@ import { Box, Divider, Grid, Typography } from '@mui/material'
 import { OpenloginAdapter } from '@web3auth/openlogin-adapter'
 import { Web3AuthOptions } from '@web3auth/modal'
 import { EthHashInfo } from '@safe-global/safe-react-components'
+import Modal from './common/Modal';
 
 import AppBar from './AppBar'
 
 import { AuthKitSignInData, Web3AuthModalPack, Web3AuthEventListener } from '@safe-global/auth-kit'
-import Home from './pages/KYC'
+import KYC from './pages/KYC'
+import Crypto from './pages/Crypto'
 
 const connectedHandler: Web3AuthEventListener = (data) => console.log('CONNECTED', data)
 const disconnectedHandler: Web3AuthEventListener = (data) => console.log('DISCONNECTED', data)
@@ -117,10 +119,39 @@ function App() {
     setSafeAuthSignInResponse(null)
   }
 
+  const updatedAvailableStatus = localStorage.getItem("anonAadhaar");
+  useEffect(()=>{
+    if (updatedAvailableStatus) {
+      const parsedValue = JSON.parse(updatedAvailableStatus);
+      console.log("--parsedValue---",parsedValue.status)
+    }
+  },[updatedAvailableStatus])
+    
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+   
+
   return (
     <>
       <AppBar onLogin={login} onLogout={logout} userInfo={userInfo} isLoggedIn={!!provider} />
-      <Home/>
+      <KYC/>
+      <div>
+      <button onClick={openModal}>Open Modal</button>
+
+{/* Integration of Modal */}
+<Modal isOpen={isModalOpen} onClose={closeModal}>
+  {/* Your modal content goes here */}
+  <Crypto/>
+</Modal>
+      </div>
+
       {safeAuthSignInResponse?.eoa && (
         <Grid container>
           <Grid item md={4} p={4}>

@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <SafeThemeProvider mode="dark">
       {(safeTheme) => (
         <ThemeProvider theme={safeTheme}>
-          <CssBaseline />
+          {/* <CssBaseline /> */}
           <App />
         </ThemeProvider>
       )}
